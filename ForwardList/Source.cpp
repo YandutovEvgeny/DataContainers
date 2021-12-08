@@ -4,7 +4,8 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-#define tab '\t'
+#define tab "\t"
+#define delimiter "--------------------------------------------------"
 
 class Element
 {
@@ -61,7 +62,40 @@ public:
 
 	void pop_front()
 	{
-		
+		Element* Temp = Head->pNext;  //Присваеваем итератору указатель на 2 элемент
+		delete Head;                  //Удаляем Голову
+		Head = Temp;                  //Назначаем новый головной элемент
+	}
+
+	void pop_back()
+	{
+		Element* Temp = Head;          
+		while (Temp->pNext->pNext!=nullptr)Temp = Temp->pNext;
+		delete Temp->pNext;
+		Temp->pNext = nullptr;
+	}
+
+	void insert(int Data, int n)
+	{
+		Element* Temp = Head;
+		int i = 0;
+		while (Temp != nullptr)
+		{
+			Temp = Temp->pNext;
+			i++;
+		}
+		if (n > i)
+		{
+			cout << "Вы вышли за пределы списка!" << endl;
+			return;
+		}
+		else
+		{
+			Element* New = new Element(Data);
+			New->pNext = Temp->pNext;
+			Temp->pNext = New;
+		}
+
 	}
 
 	//           Methods:
@@ -89,8 +123,16 @@ void main()
 		list.push_front(rand() % 100);
 	}
 	list.Print();
-	list.push_back(4);
+	cout << delimiter << endl;
+	list.push_back(8);
 	list.Print();
+	cout << delimiter << endl;
 	list.pop_front();
+	list.Print();
+	cout << delimiter << endl;
+	list.pop_back();
+	list.Print();
+	cout << delimiter << endl;
+	list.insert(100, 3);
 	list.Print();
 }
