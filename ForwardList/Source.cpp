@@ -112,6 +112,21 @@ public:
 		Temp->pNext = New;
 	}
 
+	void erase(int Index)
+	{
+		if (Index > Head->count)
+		{
+			cout << "Error 404: Выход за пределы списка!";
+			return;
+		}
+		if (Index == 0 || Head == nullptr)return pop_front();
+		Element* Temp = Head;
+		for (int i = 0; i < Index - 1; i++)Temp = Temp->pNext;
+		Element* Erased = Temp->pNext;
+		Temp->pNext = Temp->pNext->pNext;
+		delete Erased;
+	}
+
 	//           Methods:
 	void Print()const
 	{
@@ -148,12 +163,16 @@ void main()
 	list.pop_back();
 	list.Print();
 	cout << delimiter << endl;*/
-	int index, value;
+	/*int index, value;
 	cout << "Введите индекс добавляемого элемента: "; cin >> index;
 	cout << "Введите значение добавляемого элемента: "; cin >> value;
 	list.insert(value, index);
+	list.Print();*/
+	int index;
+	cout << "Введите индекс удаляемого элемента: "; cin >> index;
+	list.erase(index);
 	list.Print();
-
+ 
 	/*list.push_back(123);
 	list.Print();
 	list.pop_back();
