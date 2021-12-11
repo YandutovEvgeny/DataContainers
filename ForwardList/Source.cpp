@@ -1,5 +1,6 @@
 ﻿//ForwardList
 #include<iostream>
+#include<List>
 using std::cin;
 using std::cout;
 using std::endl;
@@ -13,6 +14,18 @@ class Element
 	Element* pNext;    //Адрес следующего элемента
 	static int count;  //Количество элементов
 public:
+	int get_Data()const
+	{
+		return Data;
+	}
+	Element* get_pNext()const
+	{
+		return pNext;
+	}
+	void set_pNext(Element* pNext)
+	{
+		this->pNext = pNext;
+	}
 	Element(int Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
 	{
 		count++;
@@ -33,6 +46,18 @@ class ForwardList
 	Element* Head;      //Указывает на начальный элемент списка. Является точкой входа в список.
 	size_t size;
 public:
+	Element* get_Head()const
+	{
+		return Head;
+	}
+	size_t get_size()const
+	{
+		return size;
+	}
+	void set_size(size_t size)
+	{
+		this->size = size;
+	}
 	ForwardList()
 	{
 		this->Head = nullptr; //Если голова указывает на 0, значит список пуст
@@ -44,12 +69,14 @@ public:
 	{
 		for (const int* it = il.begin(); it != il.end(); it++)
 		{
+			//begin() - Возвращает итератор на начальный элемент контейнера
+			//end() - Возвращает итератор на последний элемент контейнера
 			//it - итератор для прохождения по il(initializer_list)
 			push_back(*it);
 		}
 	}
 
-	ForwardList(const ForwardList& other)
+	ForwardList(const ForwardList& other)    //CopyConstructor
 	{
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)this->push_back(Temp->Data);
 		cout << "FLCopyConstructor: " << this << endl;
@@ -63,7 +90,7 @@ public:
 	}
 
 	//             Operators:
-	ForwardList& operator=(const ForwardList& other)
+	ForwardList& operator=(const ForwardList& other)  //CopyAssignment
 	{
 		if (this == &other)return *this;		
 		while (Head)pop_front();
@@ -180,6 +207,20 @@ public:
 	}
 };
 
+ForwardList operator+(const ForwardList& left, const ForwardList& right)
+{
+	ForwardList result(left);
+	Element* Temp = result.get_Head();
+	for (; Temp->get_pNext() != nullptr; Temp = Temp->get_pNext());
+	Element* Temp2 = right.get_Head();
+	for (; Temp2 != nullptr; Temp2 = Temp2->get_pNext(), Temp = Temp->get_pNext())
+	{
+		Temp->set_pNext(new Element(Temp2->get_Data()));
+	}
+	result.set_size(left.get_size() + right.get_size());
+	return result;
+}
+
 //#define BASE_CHECK
 //#define COUNT_CHECK
 //#define COPY_METHODS_CHECK
@@ -260,6 +301,12 @@ void main()
 		cout << arr[i] << tab;
 	cout << endl;*/
 
-	ForwardList list = { 3,5,8,13,21 };
-	list.Print();
+/*	ForwardList list = { 3,5,8,13,21 };
+	list.Print();*/
+
+	ForwardList list1 = { 3,5,8,13,21 };
+	ForwardList list2 = { 34, 55, 89 };
+	ForwardList list3 = list1 + list2;
+	list3.Print();
+	
 }
