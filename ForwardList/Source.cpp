@@ -210,7 +210,7 @@ public:
 ForwardList operator+(const ForwardList& left, const ForwardList& right)
 {
 	ForwardList result(left);
-	Element* Temp = result.get_Head();
+	Element* Temp = result.get_Head();    
 	for (; Temp->get_pNext() != nullptr; Temp = Temp->get_pNext());
 	Element* Temp2 = right.get_Head();
 	for (; Temp2 != nullptr; Temp2 = Temp2->get_pNext(), Temp = Temp->get_pNext())
