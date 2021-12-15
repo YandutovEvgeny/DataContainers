@@ -9,18 +9,23 @@ class Element
 	int Data;            //Значение элемента
 	Element* pNext;      //Указатель на следующий элемент
 	Element* pPrev;      //Указатель на предыдущий элемент
+	static int count;    //Количество элементов
 public:
 	Element(int Data, Element* pNext = nullptr, Element* pPrev = nullptr)
 		:Data(Data), pNext(pNext), pPrev(pPrev)
 	{
 		cout << "EConstructor:\t" << this << endl;
+		count++;
 	}
 	~Element()
 	{
 		cout << "EDestructor:\t" << this << endl;
+		count--;
 	}
 	friend class List;
 };
+
+int Element::count = 0;
 
 class List
 {
@@ -43,24 +48,67 @@ public:
 	//            Adding elements:
 	void push_front(int Data)
 	{
-		Element* New = new Element(Data, Head, Tail);
-		New->pNext = Head;
-		Element* Temp = Tail;
-		while (Tail != nullptr)Temp = Temp->pPrev;
-		Temp->pPrev = New;
-		Head = new Element(Data, Head, Tail);
-		New->pPrev = nullptr;
+		if (Head != nullptr)
+		{
+			Element* New = new Element(Data, Head, Tail);
+			New->pNext = Head;
+			Head = New;
+			New->pPrev = nullptr;
+		}
+		else Head = Tail = new Element(Data, Head, Tail);
 	}
 
+	void push_back(int Data)
+	{
+		Element* New = new Element(Data, Head, Tail);
+		New->pPrev = Tail;
+		Tail = New;
+		New->pNext = nullptr;
+	}
+
+	void insert(int Data, int Index)
+	{
+		Element* Temp = Head;
+		for (int i = 0; i < Index - 1; i++)Temp = Temp->pNext;
+		Element New = new Element(Data);
+
+	}
+
+	//           Erasing elements:
+	void pop_front()
+	{
+		Element* Erased = Head;
+		Head = Head->pNext;
+		delete Erased;
+		Head->pPrev = nullptr;
+	}
+
+	void pop_back()
+	{
+		Element* Erased = Tail;
+		Tail = Tail->pPrev;
+		delete Erased;
+		Tail->pNext = nullptr;
+	}
+	
 	//             Methods:
 	void Print()const
 	{
-		Element* Temp = Head;
+		//Выводим элементы с конца:
+		Element* Temp = Tail;
 		while (Temp != nullptr)
 		{
-			cout << Temp << tab << Temp->pPrev << Temp->Data << tab << Temp->pNext << endl;
-			Temp = Temp->pNext;
+			cout << Temp << tab << Temp->Data << tab << Temp->pPrev << endl;
+			Temp = Temp->pPrev;
 		}
+
+		//Выводим элементы с начала:
+		/*Element* Temp = Head;
+		while (Temp != nullptr)
+		{
+			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+			Temp = Temp->pNext;
+		}*/
 	}
 };
 
@@ -72,7 +120,11 @@ void main()
 	List list;
 	for (int i = 0; i < n; i++)
 	{
-		list.push_front(rand() % 100);
+		list.push_back(rand() % 100);
 	}
+	list.Print();
+	/*list.pop_front();
+	list.Print();*/
+	list.pop_back();
 	list.Print();
 }
