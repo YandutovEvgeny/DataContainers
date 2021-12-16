@@ -56,6 +56,7 @@ public:
 			New->pPrev = nullptr;
 		}
 		else Head = Tail = new Element(Data, Head, Tail);
+		size++;
 	}
 
 	void push_back(int Data)
@@ -64,13 +65,14 @@ public:
 		New->pPrev = Tail;
 		Tail = New;
 		New->pNext = nullptr;
+		size++;
 	}
 
 	void insert(int Data, int Index)
 	{
 		Element* Temp = Head;
 		for (int i = 0; i < Index - 1; i++)Temp = Temp->pNext;
-		Element New = new Element(Data);
+		Element* New = new Element(Data);
 
 	}
 
@@ -81,6 +83,7 @@ public:
 		Head = Head->pNext;
 		delete Erased;
 		Head->pPrev = nullptr;
+		size--;
 	}
 
 	void pop_back()
@@ -89,6 +92,7 @@ public:
 		Tail = Tail->pPrev;
 		delete Erased;
 		Tail->pNext = nullptr;
+		size--;
 	}
 	
 	//             Methods:
