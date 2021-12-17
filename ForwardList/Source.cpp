@@ -289,7 +289,7 @@ ForwardList operator+(const ForwardList& left, const ForwardList& right)
 
 //#define BASE_CHECK
 //#define COUNT_CHECK
-//#define COPY_METHODS_CHECK
+#define COPY_METHODS_CHECK
 //#define OPERATOR_PLUS_CHECK
 //#define RANGE_BASED_FOR_ARR
 
