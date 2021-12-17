@@ -134,11 +134,13 @@ public:
 		{
 			Temp = Head;
 			for (int i = 0; i < Index; i++)Temp = Temp->pNext;
+			if (Head->pPrev == nullptr)return pop_front();
 		}
 		else
 		{
 			Temp = Tail;
 			for (int i = 0; i < size - Index - 1; i++)Temp = Temp->pPrev;
+			if (Tail->pNext == nullptr)return pop_back();
 		}
 		Element* Erased = Temp;
 		Temp->pNext->pPrev = Temp->pPrev;
