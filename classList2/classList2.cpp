@@ -239,11 +239,12 @@ public:
 			Temp = Tail;
 			for (int i = 0; i < size - Index - 1; i++)Temp = Temp->pPrev;
 		}
-		Element* New = new Element(Data);
+		Temp->pPrev = Temp->pPrev->pNext = new Element(Data, Temp, Temp->pPrev);
+		/*Element* New = new Element(Data);
 		New->pNext = Temp;
 		New->pPrev = Temp->pPrev;
 		Temp->pPrev->pNext = New;
-		Temp->pPrev = New;
+		Temp->pPrev = New;*/
 		size++;
 	}
 
@@ -293,10 +294,11 @@ public:
 			for (int i = 0; i < size - Index - 1; i++)Temp = Temp->pPrev;
 			if (Tail->pNext == nullptr)return pop_back();
 		}
+
 		Element* Erased = Temp;
 		Temp->pNext->pPrev = Temp->pPrev;
 		Temp->pPrev->pNext = Temp->pNext;
-		delete Temp;
+		delete Erased;
 		size--;
 	}
 
@@ -319,7 +321,7 @@ public:
 	}
 };
 
-//#define BASE_CHECK
+#define BASE_CHECK
 
 void main()
 {
@@ -338,17 +340,17 @@ void main()
 	/*list.pop_front();
 	list.pop_back();*/
 	int index;
-	/*int value;
+	int value;
 	cout << "Введите индекс добавляемого элемента: "; cin >> index;
 	cout << "Введите значение добавляемого элемента: "; cin >> value;
-	list.insert(value, index);*/
-	cout << "Введите индекс удаляемого элемента: "; cin >> index;
-	list.erase(index);
+	list.insert(value, index);
+	/*cout << "Введите индекс удаляемого элемента: "; cin >> index;
+	list.erase(index);*/
 	list.Print();
 	list.Print_reverse();
 #endif // BASE_CHECK
 
-	List list = { 3,5,8,13,21 };
+	/*List list = { 3,5,8,13,21 };
 	list.Print();
 
 	List list1;
@@ -360,5 +362,5 @@ void main()
 	{
 		cout << *rit << tab;
 	}
-	cout << endl;
+	cout << endl;*/
 }
