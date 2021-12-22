@@ -26,10 +26,10 @@ class List
 			cout << "EDestructor:\t" << this << endl;
 		}
 		friend class List;
-	}*Head, *Tail;  //Объявляем два указателя сразу же после описания класса.
+	}*Head, * Tail;  //Объявляем два указателя сразу же после описания класса.
 	//Эти указатели будут переменными членами класса List.
 	size_t size; //Размер списка
-	
+
 	class BaseIterator
 	{
 	protected:
@@ -45,7 +45,7 @@ class List
 		~BaseIterator()
 		{
 #ifdef DEBUG
-			cout << "IDestructor:\t" << this << endl;  
+			cout << "IDestructor:\t" << this << endl;
 #endif // DEBUG
 
 		}
@@ -64,7 +64,7 @@ class List
 		}
 	};
 public:
-	class ConstIterator:public BaseIterator
+	class ConstIterator :public BaseIterator
 	{
 	public:
 		ConstIterator(Element* Temp) : BaseIterator(Temp)
@@ -106,15 +106,15 @@ public:
 	class Iterator :public ConstIterator
 	{
 	public:
-		Iterator(Element* Temp) :ConstIterator(Temp){}
+		Iterator(Element* Temp) :ConstIterator(Temp) {}
 		~Iterator() {}
 		int& operator*()
 		{
 			return BaseIterator::Temp->Data;
 		}
 	};
-	
-	class ConstReverseIterator:public BaseIterator
+
+	class ConstReverseIterator :public BaseIterator
 	{
 	public:
 		ConstReverseIterator(Element* Temp) :BaseIterator(Temp)
@@ -158,8 +158,8 @@ public:
 	class ReverseIterator :public ConstReverseIterator
 	{
 	public:
-		ReverseIterator(Element* Temp):ConstReverseIterator(Temp){}
-		~ReverseIterator(){}
+		ReverseIterator(Element* Temp) :ConstReverseIterator(Temp) {}
+		~ReverseIterator() {}
 		int& operator*()
 		{
 			return BaseIterator::Temp->Data;
