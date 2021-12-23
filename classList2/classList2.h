@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include<iostream>
 using std::cin;
 using std::cout;
@@ -20,9 +20,9 @@ class List
 		Element(T Data, Element* pNext = nullptr, Element* pPrev = nullptr);
 		~Element();
 		friend class List;
-	}*Head, * Tail;  //Объявляем два указателя сразу же после описания класса.
-	//Эти указатели будут переменными членами класса List.
-	size_t size; //Размер списка
+	}*Head, * Tail;  //РћР±СЉСЏРІР»СЏРµРј РґРІР° СѓРєР°Р·Р°С‚РµР»СЏ СЃСЂР°Р·Сѓ Р¶Рµ РїРѕСЃР»Рµ РѕРїРёСЃР°РЅРёСЏ РєР»Р°СЃСЃР°.
+	//Р­С‚Рё СѓРєР°Р·Р°С‚РµР»Рё Р±СѓРґСѓС‚ РїРµСЂРµРјРµРЅРЅС‹РјРё С‡Р»РµРЅР°РјРё РєР»Р°СЃСЃР° List.
+	size_t size; //Р Р°Р·РјРµСЂ СЃРїРёСЃРєР°
 
 	class BaseIterator
 	{

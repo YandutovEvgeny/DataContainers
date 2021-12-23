@@ -1,4 +1,4 @@
-#include"classList2.h"
+п»ї#include"classList2.h"
 template<typename T>
 List<T>::Element::Element(T Data, Element* pNext, Element* pPrev)
 	:Data(Data), pNext(pNext), pPrev(pPrev)
@@ -187,7 +187,7 @@ typename List<T>::ConstReverseIterator List<T>::crend()const
 template<typename T>
 List<T>::List()
 {
-	Head = Tail = nullptr;  //Если список пуст, его голова и хвост указывают на 0
+	Head = Tail = nullptr;  //Р•СЃР»Рё СЃРїРёСЃРѕРє РїСѓСЃС‚, РµРіРѕ РіРѕР»РѕРІР° Рё С…РІРѕСЃС‚ СѓРєР°Р·С‹РІР°СЋС‚ РЅР° 0
 	size = 0;
 	cout << "LConstructor:\t" << this << endl;
 }
@@ -195,7 +195,7 @@ template<typename T>
 List<T>::List(const std::initializer_list<T>& il) :List()
 {
 	cout << typeid(il.begin()).name() << endl;
-	for (int const* it = il.begin(); it != il.end(); it++)
+	for (T const* it = il.begin(); it != il.end(); it++)
 	{
 		push_back(*it);
 	}
@@ -205,7 +205,7 @@ List<T>::List(const List<T>& other) :List()
 {
 	/*for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)this->push_back(Temp->Data);*/
 	cout << "LCopyConstructor:\t" << this << endl;
-	*this = other;  //Из конструктора копирования вызываем оператор присваивания
+	*this = other;  //РР· РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° РєРѕРїРёСЂРѕРІР°РЅРёСЏ РІС‹Р·С‹РІР°РµРј РѕРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
 }
 template<typename T>
 List<T>::~List()
@@ -232,8 +232,8 @@ void List<T>::push_front(T Data)
 {
 	if (Head == nullptr && Tail == nullptr)
 	{
-		//Когда в списке появляется первый элемент, он одновременно является 
-		//и Головой, и Хвостом
+		//РљРѕРіРґР° РІ СЃРїРёСЃРєРµ РїРѕСЏРІР»СЏРµС‚СЃСЏ РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚, РѕРЅ РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ СЏРІР»СЏРµС‚СЃСЏ 
+		//Рё Р“РѕР»РѕРІРѕР№, Рё РҐРІРѕСЃС‚РѕРј
 		Head = Tail = new Element(Data);
 		size++;
 		return;
@@ -261,7 +261,7 @@ void List<T>::insert(T Data, int Index)
 {
 	if (Index >= size)
 	{
-		cout << "Error 404: Выход за пределы списка!" << endl;
+		cout << "Error 404: Р’С‹С…РѕРґ Р·Р° РїСЂРµРґРµР»С‹ СЃРїРёСЃРєР°!" << endl;
 		return;
 	}
 
@@ -316,7 +316,7 @@ void List<T>::erase(int Index)
 {
 	if (Index >= size)
 	{
-		cout << "Error 404: Выход за пределы списка!" << endl;
+		cout << "Error 404: Р’С‹С…РѕРґ Р·Р° РїСЂРµРґРµР»С‹ СЃРїРёСЃРєР°!" << endl;
 		return;
 	}
 	Element* Temp;
@@ -348,7 +348,7 @@ void List<T>::Print()const
 	for (Element* Temp = Head; Temp; Temp = Temp->pNext)
 		cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 	cout << "Tail:\t" << Tail << endl;
-	cout << "Количество элементов списка: " << size << endl;
+	cout << "РљРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ СЃРїРёСЃРєР°: " << size << endl;
 }
 template<typename T>
 void List<T>::Print_reverse()const
@@ -357,7 +357,7 @@ void List<T>::Print_reverse()const
 	for (Element* Temp = Tail; Temp; Temp = Temp->pPrev)
 		cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 	cout << "Head:\t" << Head << endl;
-	cout << "Количество элементов списка: " << size << endl;
+	cout << "РљРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ СЃРїРёСЃРєР°: " << size << endl;
 }
 
 //-----------------------------------------------------------------------------------
