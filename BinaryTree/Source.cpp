@@ -63,6 +63,14 @@ public:
 	{
 		return Avg(this->Root);
 	}
+	void erease(int Data)
+	{
+		erease(Data, this->Root);
+	}
+	void Clear()
+	{
+		return Clear(this->Root);
+	}
 	void print()const
 	{
 		print(this->Root);
@@ -127,6 +135,40 @@ private:
 		return double(Sum(Root)) / Count(Root);
 	}
 
+	void erease(int Data, Element* Root)
+	{
+		if (Root == nullptr)return;
+		//if(Data != )
+		if (Data < Root->Data)
+		{
+			if (Data == Root->pLeft->Data)
+			{
+				Element* Erased = Root->pLeft;
+				Root->pLeft = Root->pLeft->pLeft;
+				delete Erased;
+			}
+			else erease(Data, Root->pLeft);
+		}
+		else
+		{
+			if (Data == Root->pRight->Data)
+			{
+				Element* Erased = Root->pRight;
+				Root->pRight = Root->pRight->pRight;
+				delete Erased;
+			}
+			else erease(Data, Root->pRight);
+		}
+	}
+
+	void Clear(Element* Root)
+	{
+		if (Root == nullptr)return;
+		Clear(Root->pLeft);
+		Clear(Root->pRight);
+		delete Root;
+	}
+
 	void print(Element* Root)const
 	{
 		if (Root == nullptr)return;
@@ -139,6 +181,7 @@ private:
 void main()
 {
 	setlocale(LC_ALL, "");
+	int erease_number;
 	int n;
 	cout << "Введите количество элементов: "; cin >> n;
 	Tree tree;
@@ -153,4 +196,10 @@ void main()
 	cout << "Количество элементов в дереве: " << tree.Count() << endl;
 	cout << "Сумма элементов в дереве: " << tree.Sum() << endl;
 	cout << "Среднее арифметическое элементов в дереве: " << tree.Avg() << endl;
+	cout << "Укажите, какой элемент хотите удалить из дерева: "; cin >> erease_number;
+	tree.erease(erease_number);
+	cout << "Указанный элемент удалён!" << endl;
+	tree.print();
+	tree.Clear();
+	cout << "Дерево полностью очищено!" << endl;
 }
