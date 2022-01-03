@@ -34,11 +34,40 @@ public:
 		Root = nullptr;
 		cout << "TConstructor:\t" << this << endl;
 	}
+	Tree(const Tree& other):Tree()
+	{
+		cout << "TCopyConstructor:\t" << this << endl;
+		*this = other;
+	}
 	~Tree()
 	{
 		cout << "TDestructor:\t" << this << endl;
 	}
 
+	//                Operators:
+	Tree& operator=(const Tree& other)
+	{
+		if (this != &other)
+		{
+			this->Clear();
+			Element* Root = other.Root;
+			RecursionFunction(Root);
+		}
+		cout << "TCopyAssignment:\t" << this << endl;
+		return *this;
+	}
+
+	void RecursionFunction(Element* Root)    //Рекурсивная функция для оператора присваивания
+	{
+		if (Root != nullptr)
+		{
+			this->insert(Root->Data);
+			RecursionFunction(Root->pLeft);
+			RecursionFunction(Root->pRight);
+		}
+	}
+
+	//                Methods:
 	void insert(int Data)
 	{
 		insert(Data, this->Root);
@@ -138,7 +167,6 @@ private:
 	void erease(int Data, Element* Root)
 	{
 		if (Root == nullptr)return;
-		//if(Data != )
 		if (Data < Root->Data)
 		{
 			if (Data == Root->pLeft->Data)
@@ -178,9 +206,12 @@ private:
 	}
 };
 
+//#define BASE_CHECK
+
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef BASE_CHECK
 	int erease_number;
 	int n;
 	cout << "Введите количество элементов: "; cin >> n;
@@ -202,4 +233,14 @@ void main()
 	tree.print();
 	tree.Clear();
 	cout << "Дерево полностью очищено!" << endl;
+#endif // BASE_CHECK
+
+	Tree tree1;
+	for (int i = 0; i < 5; i++)
+	{
+		tree1.insert(rand() % 100);
+	}
+	tree1.print();
+	Tree tree2 = tree1;
+	tree2.print();
 }
