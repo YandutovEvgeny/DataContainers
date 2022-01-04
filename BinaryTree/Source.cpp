@@ -115,7 +115,7 @@ public:
 	{
 		return Clear(this->Root);
 	}
-	void print()const
+	void print()const  
 	{
 		print(this->Root);
 		cout << endl;
