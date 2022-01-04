@@ -39,8 +39,15 @@ public:
 		cout << "TCopyConstructor:\t" << this << endl;
 		*this = other;
 	}
+	Tree(Tree&& other)
+	{
+		this->Root = other.Root;
+		cout << "TMoveConstructor:\t" << this << endl;
+		other.Root = nullptr;
+	}
 	~Tree()
 	{
+		Clear(Root);
 		cout << "TDestructor:\t" << this << endl;
 	}
 
@@ -54,6 +61,14 @@ public:
 			RecursionFunction(Root);
 		}
 		cout << "TCopyAssignment:\t" << this << endl;
+		return *this;
+	}
+
+	Tree& operator=(Tree&& other)
+	{
+		this->Root = other.Root;
+		other.Root = nullptr;
+		cout << "TMoveAssignment:\t" << this << endl;
 		return *this;
 	}
 
@@ -207,6 +222,7 @@ private:
 };
 
 //#define BASE_CHECK
+#define COPY_METHODS_CHECK
 
 void main()
 {
@@ -235,12 +251,17 @@ void main()
 	cout << "Дерево полностью очищено!" << endl;
 #endif // BASE_CHECK
 
+#ifdef COPY_METHODS_CHECK
 	Tree tree1;
 	for (int i = 0; i < 5; i++)
 	{
 		tree1.insert(rand() % 100);
 	}
 	tree1.print();
-	Tree tree2 = tree1;
+	Tree tree2 = tree1;        //Copy constructor
 	tree2.print();
+	Tree tree3;                
+	tree3 = tree2;             //Shallow copy
+	tree3.print();             
+#endif // COPY_METHODS_CHECK
 }
