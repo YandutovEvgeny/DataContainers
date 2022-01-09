@@ -182,6 +182,12 @@ private:
 	void erease(int Data, Element* Root)
 	{
 		if (Root == nullptr)return;
+		if (Data == Root->Data)
+		{
+			cout << "Вы сломали программу, та в принципе ничего нового!" << endl;
+			delete Root;
+			return;
+		}
 		if (Data < Root->Data)
 		{
 			if (Data == Root->pLeft->Data)
@@ -221,8 +227,8 @@ private:
 	}
 };
 
-//#define BASE_CHECK
-#define COPY_METHODS_CHECK
+#define BASE_CHECK
+//#define COPY_METHODS_CHECK
 
 void main()
 {
@@ -245,7 +251,7 @@ void main()
 	cout << "Среднее арифметическое элементов в дереве: " << tree.Avg() << endl;
 	cout << "Укажите, какой элемент хотите удалить из дерева: "; cin >> erease_number;
 	tree.erease(erease_number);
-	cout << "Указанный элемент удалён!" << endl;
+	//cout << "Указанный элемент удалён!" << endl;
 	tree.print();
 	tree.Clear();
 	cout << "Дерево полностью очищено!" << endl;
@@ -264,4 +270,5 @@ void main()
 	tree3 = tree2;             //Shallow copy
 	tree3.print();             
 #endif // COPY_METHODS_CHECK
+	main();
 }
