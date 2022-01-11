@@ -7,6 +7,7 @@ using std::endl;
 
 class Tree
 {
+protected:
 	class Element
 	{
 		int Data;
@@ -22,7 +23,12 @@ class Tree
 		{
 			cout << "EDestructor:\t" << this << endl;
 		}
+		bool is_leaf()const
+		{
+			return pLeft == pRight;
+		}
 		friend class Tree;
+		friend class UniqueTree;
 	}*Root;  //Корень дерева
 public:
 	Element* getRoot()const
@@ -33,6 +39,10 @@ public:
 	{
 		Root = nullptr;
 		cout << "TConstructor:\t" << this << endl;
+	}
+	Tree(const std::initializer_list<int>& il): Tree()
+	{
+		for (int i : il)insert(i, Root);
 	}
 	Tree(const Tree& other):Tree()
 	{
@@ -48,6 +58,7 @@ public:
 	~Tree()
 	{
 		Clear(Root);
+		Root = nullptr;
 		cout << "TDestructor:\t" << this << endl;
 	}
 
@@ -105,15 +116,16 @@ public:
 	}
 	double Avg()const
 	{
-		return Avg(this->Root);
+		return (double)Sum(Root) / Count(Root);
 	}
-	void erease(int Data)
+	void erase(int Data)
 	{
-		erease(Data, this->Root);
+		erase(Data, this->Root);
 	}
 	void Clear()
 	{
 		return Clear(this->Root);
+		Root = nullptr;
 	}
 	void print()const  
 	{
@@ -135,7 +147,7 @@ private:
 			else  //В противном случае
 				insert(Data, Root->pLeft);   //идём налево и ищем место куда добавить элемент.
 		}
-		else
+		else //if(Data > Root->Data)
 		{
 			if (Root->pRight == nullptr)Root->pRight = new Element(Data);
 			else insert(Data, Root->pRight);
@@ -146,7 +158,7 @@ private:
 	{
 		/*if (Root->pLeft == nullptr)return Root->Data;
 		else minValue(Root->pLeft);*/
-		return Root->pLeft == nullptr ? Root->Data : minValue(Root->pLeft);
+		return Root->pLeft ? minValue(Root->pLeft) : Root->Data;
 	}
 
 	int maxValue(Element* Root)const
@@ -159,54 +171,50 @@ private:
 
 	int Count(Element* Root)const
 	{
-		return Root == nullptr ? 0 : Count(Root->pLeft) + Count(Root->pRight) + 1;
+		//return Root ? Count(Root->pLeft) + Count(Root->pRight) + 1 : 0;
+		return !Root ? 0 : Count(Root->pLeft) + Count(Root->pRight) + 1;
 	}
 
 	int Sum(Element* Root)const
 	{
-		int sum = 0;
+		/*int sum = 0;
 		if (Root != nullptr)
 		{
 			sum += Sum(Root->pLeft);
 			sum += Root->Data;
 			sum += Sum(Root->pRight);
 		}
-		return sum;
+		return sum;*/
+		return Root ? Sum(Root->pLeft) + Sum(Root->pRight) + Root->Data : 0;
 	}
 
-	double Avg(Element* Root)const
-	{
-		return double(Sum(Root)) / Count(Root);
-	}
-
-	void erease(int Data, Element* Root)
+	void erase(int Data, Element*& Root)
 	{
 		if (Root == nullptr)return;
+		erase(Data, Root->pLeft);
+		erase(Data, Root->pRight);
 		if (Data == Root->Data)
 		{
-			cout << "Вы сломали программу, та в принципе ничего нового!" << endl;
-			delete Root;
-			return;
-		}
-		if (Data < Root->Data)
-		{
-			if (Data == Root->pLeft->Data)
+			if (Root->is_leaf())         //Если элемент является листком
 			{
-				Element* Erased = Root->pLeft;
-				Root->pLeft = Root->pLeft->pLeft;
-				delete Erased;
+				//то его можно удалять 
+				delete Root;
+				Root=nullptr;
 			}
-			else erease(Data, Root->pLeft);
-		}
-		else
-		{
-			if (Data == Root->pRight->Data)
+			else
 			{
-				Element* Erased = Root->pRight;
-				Root->pRight = Root->pRight->pRight;
-				delete Erased;
+				if (Count(Root->pLeft) > Count(Root->pRight)) //Если в левой ветке больше элементов чем в правой ветке
+				{
+					Root->Data = maxValue(Root->pLeft);  //Заменяем значение удаляемого элемента максимальным значением в левой ветке
+                    erase(maxValue(Root->pLeft), Root->pLeft);
+				
+				}
+				else //В противном случае 
+				{
+					Root->Data = minValue(Root->pRight);  //заменяем значение удаляемого элемента минимальным значением в правой ветке
+					erase(minValue(Root->pRight), Root->pRight);
+				}
 			}
-			else erease(Data, Root->pRight);
 		}
 	}
 
@@ -227,14 +235,42 @@ private:
 	}
 };
 
-#define BASE_CHECK
+class UniqueTree : public Tree
+{
+	void insert(int Data, Element* Root)
+	{
+		//Root - корень поддерева
+		//this->Root - корень всего дерева
+		if (this->Root == nullptr)this->Root = new Element(Data);
+		if (Root == nullptr)return;
+		if (Data < Root->Data)
+		{
+			if (Root->pLeft == nullptr)  //Если есть место для добавления элемента,
+				Root->pLeft = new Element(Data);  //Добавляем элемент прямо сюда.
+			else  //В противном случае
+				insert(Data, Root->pLeft);   //идём налево и ищем место куда добавить элемент.
+		}
+		else if(Data > Root->Data)
+		{
+			if (Root->pRight == nullptr)Root->pRight = new Element(Data);
+			else insert(Data, Root->pRight);
+		}
+	}
+public:
+	void insert(int Data)
+	{
+		insert(Data, Root);
+	}
+};
+
+//#define BASE_CHECK
 //#define COPY_METHODS_CHECK
 
 void main()
 {
 	setlocale(LC_ALL, "");
 #ifdef BASE_CHECK
-	int erease_number;
+	int erase_number;
 	int n;
 	cout << "Введите количество элементов: "; cin >> n;
 	Tree tree;
@@ -249,13 +285,39 @@ void main()
 	cout << "Количество элементов в дереве: " << tree.Count() << endl;
 	cout << "Сумма элементов в дереве: " << tree.Sum() << endl;
 	cout << "Среднее арифметическое элементов в дереве: " << tree.Avg() << endl;
-	cout << "Укажите, какой элемент хотите удалить из дерева: "; cin >> erease_number;
-	tree.erease(erease_number);
-	//cout << "Указанный элемент удалён!" << endl;
-	tree.print();
+	/*cout << "Укажите, какой элемент хотите удалить из дерева: "; cin >> erase_number;
+	tree.erase(erase_number);
+	//cout << "Указанный элемент удалён!" << endl;*/
 	tree.Clear();
-	cout << "Дерево полностью очищено!" << endl;
+	tree.print();
+	//cout << "Дерево полностью очищено!" << endl;
+	
+	UniqueTree u_tree;
+	for (int i = 0; i < n; i++)
+	{
+		u_tree.insert(rand() % 100);
+	}
+	u_tree.print();
+	cout << endl;
+	cout << "Минимальное значение в дереве: " << u_tree.minValue() << endl;
+	cout << "Максимальное значение в дереве: " << u_tree.maxValue() << endl;
+	cout << "Количество элементов в дереве: " << u_tree.Count() << endl;
+	cout << "Сумма элементов в дереве: " << u_tree.Sum() << endl;
+	cout << "Среднее арифметическое элементов в дереве: " << u_tree.Avg() << endl;
+	/*cout << "Укажите, какой элемент хотите удалить из дерева: "; cin >> erase_number;
+	u_tree.erase(erase_number);
+	//cout << "Указанный элемент удалён!" << endl;*/
+	u_tree.Clear();
+	u_tree.print();
+	//cout << "Дерево полностью очищено!" << endl;
 #endif // BASE_CHECK
+
+	Tree tree = { 50, 25, 75, 16, 32, 64, 80, 8, 11, 48, 77, 85 };
+	tree.print();
+	int value;
+	cout << "Введите удаляемое значение: "; cin >> value;
+	tree.erase(value);
+	tree.print();
 
 #ifdef COPY_METHODS_CHECK
 	Tree tree1;
@@ -270,5 +332,5 @@ void main()
 	tree3 = tree2;             //Shallow copy
 	tree3.print();             
 #endif // COPY_METHODS_CHECK
-	main();
+	
 }
