@@ -263,18 +263,22 @@ private:
 		cout << tab;
 		
 		if (depth == 0)cout << Root->Data /*<< tab*/;
-		
+		//for (int i = 0; i < this->depth() - depth; i++)cout << tab;
+		int min_disatance = 8;
+		cout.width(min_disatance * (this->depth() - depth));
 		if (depth == 1 && Root->pRight == nullptr)cout << " " << tab;
 		print(Root->pRight, depth - 1);
-		cout << tab;
+		//cout << tab;
 	}
 	
 	void tree_print(int depth)
 	{
 		if (depth == this->depth())return;
-		for (int i = 0; i < (this->depth() - depth)*2; i++)cout << tab; 
+		int min_disatance = 8;
+		cout.width(min_disatance * (this->depth() - depth));
+		//for (int i = 0; i < (this->depth() - depth)*2; i++)cout << tab; 
 		print(depth);
-		for (int i = 0; i < (this->depth() - depth)*2; i++)cout << tab;
+		//for (int i = 0; i < (this->depth() - depth)*2; i++)cout << tab;
 		cout << endl;
 		tree_print(depth + 1);
 	}
