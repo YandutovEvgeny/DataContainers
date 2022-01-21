@@ -52,8 +52,8 @@ public:
 	Tree(Tree&& other)
 	{
 		this->Root = other.Root;
-		cout << "TMoveConstructor:\t" << this << endl;
 		other.Root = nullptr;
+		cout << "TMoveConstructor:\t" << this << endl;
 	}
 	~Tree()
 	{
